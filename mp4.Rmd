@@ -13,6 +13,8 @@ library(RMySQL)
 library(ggplot2)
 ```
 
+
+
 ```{r}
 db <- dbConnect_scidb(dbname = "imdb")
 #a smaller table, years before 2017
@@ -22,12 +24,13 @@ film_before_2017<-db %>%
              mi.info as info
              FROM title t
              Join movie_info as mi on mi.movie_id = t.id
-             where info_type_id = 3
+             where info_type_id = 3 #use index to speed up 
              and production_year <= 2017
              having production_year IS NOT NULL;")
 ```
 
 ```{r,message=FALSE}
+#function that generate data about a certain genre
 focus_genre <- function(genre){
   film_before_2017 %>% 
     filter(info == genre)
@@ -38,31 +41,34 @@ mu_before_2017 <- focus_genre('Musical')
 wes_before_2017 <- focus_genre('Western')
 ```
 
-```{r, message=FALSE}
+
+
+
+```{r}
 #The number of total films each year
-total_genre = 
+total_flim = 
   film_before_2017%>%
-  group_by(id,production_year)%>%
-  summarise(sum_genre = n_distinct(info))%>%
-  group_by(production_year) %>% 
-  summarise(total_num = n_distinct(id))
+  group_by(production_year) %>%
+  summarise(total_num = n_distinct(id)) 
 ```
 
 
 ```{r}
+#function that count how many films under certain genre each year
 count_number <- function(data){
   data %>% 
     group_by(production_year) %>%
     summarise(genre_num = n_distinct(id))}
 
-wes_before_2017 <- count_number(wes_before_2017)
+wes_before_2017 <- count_number(wes_before_2017) 
 mu_before_2017 <- count_number(mu_before_2017)
-horror_before_2017 <- count_number(horror_before_2017)
+horror_before_2017 <- count_number(horror_before_2017) #How many horror films each year
 ```
 
 ```{r}
+#function that count the percent of films under certain genre each year
 count_percent <- function(genre_data,genre_type) {
-  total_genre %>% left_join(genre_data, by = 'production_year') %>%
+  total_film %>% left_join(genre_data, by = 'production_year') %>%
     mutate(genre_num = ifelse(is.na(genre_num),0,genre_num)) %>%
     mutate(percent = genre_num/total_num) %>%
     mutate(genre = genre_type) %>%
@@ -72,18 +78,18 @@ count_percent <- function(genre_data,genre_type) {
 
 wes_percent <- count_percent(wes_before_2017, 'Western')
 mu_percent <- count_percent(mu_before_2017,'Musical')
-horror_percent <-count_percent(horror_before_2017,'Horror')
+horror_percent <-count_percent(horror_before_2017,'Horror') #how many percent of films are horror films each year
 
 ```
 
 ```{r}
+# join the data of percent of different films
 join <- rbind(mu_percent, wes_percent,horror_percent)
-
 join
 ```
 
 ```{r, message = FALSE}
-
+# draw the picture of percent of horror films
 hor_percent_film <- ggplot(horror_percent,aes(x=production_year,y=percent)) + 
   geom_line() + 
   theme_minimal() +
@@ -95,6 +101,7 @@ hor_percent_film
 ```
 
 ```{r, message = FALSE}
+#draw the picture of pecent of horror, ... films
 join_film <- ggplot(join,aes(x=production_year,y=percent,color = genre)) + 
   geom_line() + 
   theme_minimal() +
