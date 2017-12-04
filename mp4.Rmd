@@ -1,21 +1,25 @@
 ---
-title: "MP4"
-author: "Chujun He"
+title: "Horror is going to conquer the film industry!"
+author: "Sichu Chang, Yining Hua, Chujun He"
 date: "11/29/2017"
 output: 
   html_document:
     code_folding: hide
 ---
-```{r, include=FALSE}
+
+The two recent Hollywood horror films It and Get Out have grabbed people’s attention by bombing at the box office and earning amazingly positive reviews. Their success more or less subverted people’s stereotype about horror movies: this genre of movies has no future as they are low-priced and boring, merely trying to make people scream. 
+
+
+On the contrary, far from being dismissed, horror movies are conquering the market today. According to the data about Hollywood movies in different genres, the number of horror movies has been increasing stably for years. As horror has its ability to make profits, concrete supports from the developing computer technology, and its eligibility to outcompete other genres because of its psychological effects on freeing people from stress, it has a great chance to obtain a bright future. 
+
+First, more and more horror movies will be made in the future because of their great ability to bring back profits. 
+
+```{r, message= FALSE}
 library(tidyverse)
 library(mdsr)
 library(RMySQL)
 library(ggplot2)
-```
 
-
-
-```{r}
 db <- dbConnect_scidb(dbname = "imdb")
 #a smaller table, years before 2017
 #Since some data is missing from 2018 to 2115, we filter out these years' data
@@ -27,9 +31,7 @@ film_before_2017<-db %>%
              where info_type_id = 3 #use index to speed up 
              and production_year <= 2017
              having production_year IS NOT NULL;")
-```
 
-```{r,message=FALSE}
 #function that generate data about a certain genre
 focus_genre <- function(genre){
   film_before_2017 %>% 
@@ -39,21 +41,13 @@ focus_genre <- function(genre){
 horror_before_2017 <- focus_genre('Horror')
 mu_before_2017 <- focus_genre('Musical')
 wes_before_2017 <- focus_genre('Western')
-```
 
-
-
-
-```{r}
 #The number of total films each year
-total_flim = 
+total_film = 
   film_before_2017%>%
   group_by(production_year) %>%
   summarise(total_num = n_distinct(id)) 
-```
 
-
-```{r}
 #function that count how many films under certain genre each year
 count_number <- function(data){
   data %>% 
@@ -63,9 +57,7 @@ count_number <- function(data){
 wes_before_2017 <- count_number(wes_before_2017) 
 mu_before_2017 <- count_number(mu_before_2017)
 horror_before_2017 <- count_number(horror_before_2017) #How many horror films each year
-```
 
-```{r}
 #function that count the percent of films under certain genre each year
 count_percent <- function(genre_data,genre_type) {
   total_film %>% left_join(genre_data, by = 'production_year') %>%
@@ -80,27 +72,39 @@ wes_percent <- count_percent(wes_before_2017, 'Western')
 mu_percent <- count_percent(mu_before_2017,'Musical')
 horror_percent <-count_percent(horror_before_2017,'Horror') #how many percent of films are horror films each year
 
-```
-
-```{r}
-# join the data of percent of different films
-join <- rbind(mu_percent, wes_percent,horror_percent)
-join
-```
-
-```{r, message = FALSE}
 # draw the picture of percent of horror films
 hor_percent_film <- ggplot(horror_percent,aes(x=production_year,y=percent)) + 
   geom_line() + 
   theme_minimal() +
   scale_y_continuous(labels = scales::percent)+
-  labs(y = 'Percent of Horror Movies') +
+  labs(y = 'Percent of Horror Movies Over all Movies') +
   ggtitle('The Percentage of Horror Movies')
 
 hor_percent_film
+
+hor_num_film <- ggplot(horror_before_2017,aes(x=production_year,y=genre_num)) + 
+  geom_line() + 
+  theme_minimal() +
+  labs(y = 'Number of Horror Movies') +
+  ggtitle('The Number of Horror Movies')
+
+hor_num_film
 ```
 
-```{r, message = FALSE}
+
+From the graph looking at Hollywood horror movies, both the number and proportion of horror movies have been increasing for years. One reason behind their stable augmentation is that horror movies are usually low-budget but highly profitable, making them a safe bet for producers. For example, “Paranormal Activity” made by Blumhouse has earned 193 million dollars with a budget of only 15,000 dollars. As said by Scott Mendelson, “the horror genre has always been one that thrived on maximum returns for minimum cost.”[^1] With such advantages, horror films attract more and more investors, thus increasing their amount and market share. 
+
+
+[^1]:Pomerantz, Dorothy. “The Triumph Of 'Paranormal Activity'.” Forbes, Forbes Magazine, 18 Oct. 2012, www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity.
+
+
+
+
+```{r, message= FALSE}
+# join the data of percent of different films
+join <- rbind(mu_percent, wes_percent,horror_percent)
+join
+
 #draw the picture of pecent of horror, ... films
 join_film <- ggplot(join,aes(x=production_year,y=percent,color = genre)) + 
   geom_line() + 
