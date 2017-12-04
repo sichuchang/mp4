@@ -7,10 +7,12 @@ output:
     code_folding: hide
 ---
 
-The two recent Hollywood horror films It and Get Out have grabbed people’s attention by bombing at the box office and earning amazingly positive reviews. Their success more or less subverted people’s stereotype about horror movies: this genre of movies has no future as they are low-priced and boring, merely trying to make people scream. 
+The two recent Hollywood horror films [It](http://www.imdb.com/title/tt1396484/) and [Get Out](http://www.imdb.com/title/tt5052448/) have grabbed people’s attention by bombing at the box office and earning amazingly positive reviews. Their success more or less subverted people’s stereotype about horror movies: this genre of movies has no future as they are low-priced and boring, merely trying to make people scream. 
 
 
 On the contrary, far from being dismissed, horror movies are conquering the market today. According to the data about Hollywood movies in different genres, the number of horror movies has been increasing stably for years. As horror has its ability to make profits, concrete supports from the developing computer technology, and its eligibility to outcompete other genres because of its psychological effects on freeing people from stress, it has a great chance to obtain a bright future. 
+
+
 
 First, more and more horror movies will be made in the future because of their great ability to bring back profits. 
 
@@ -92,18 +94,25 @@ hor_num_film
 ```
 
 
-From the graph looking at Hollywood horror movies, both the number and proportion of horror movies have been increasing for years. One reason behind their stable augmentation is that horror movies are usually low-budget but highly profitable, making them a safe bet for producers. For example, “Paranormal Activity” made by Blumhouse has earned 193 million dollars with a budget of only 15,000 dollars. As said by Scott Mendelson, “the horror genre has always been one that thrived on maximum returns for minimum cost.”[^1] With such advantages, horror films attract more and more investors, thus increasing their amount and market share. 
+From the graph looking at Hollywood horror movies, both the number and proportion of horror movies have been increasing for years. One reason behind their stable augmentation is that horror movies are usually low-budget but highly profitable, making them a safe bet for producers. For example, “Paranormal Activity” made by Blumhouse has earned 193 million dollars with a budget of only 15,000 dollars. [As said by Scott Mendelson](www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity), “the horror genre has always been one that thrived on maximum returns for minimum cost.”[^1] With such advantages, horror films attract more and more investors, thus increasing their amount and market share. 
 
 
 [^1]:Pomerantz, Dorothy. “The Triumph Of 'Paranormal Activity'.” Forbes, Forbes Magazine, 18 Oct. 2012, www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity.
 
+At the same time, with the development of technology,  horror movies have way more possibilities to realize different plots than ever before, thanks to the growing range of special effects available. Due to the lack of special effects, those horror movies emerged around the 1890s are actually quite different from the horror movies today. Take a look back at the first horror movie made by Hollywood, the execution of Mary,Queen of Scotland, a 18-second-long film depicting the execution of Mary, Queen of Scots[^2]: 
 
+[^2]:Clark, Alfred, and William Heise. The execution of Mary, Queen of Scots.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BIOLsH93U1Q" frameborder="0" allowfullscreen></iframe>
+ 
+From the video we saw a blindfolded Mary being led to the execution block; The executioner  chopped off queen mary’s head, which was actually replaced by a mannequin, and this is the only special effect applied by the film. Due to the lack of special effect technology, the most scaring thing people could make at that time was the execution. However, today the themes of horror movies range from bloody murders to eerie suspense, from weird delusion to sophisticated monsters. More and more trends will be realized by horror as a general approach, such as the famous modernist approach which is so popular among art lovers and psychology lovers - the surrealist cinema. Therefore it’s pretty sure that with more possible special effects, producers have more space to produce better and more intriguing horror movies about different themes in the future.
+
+Moreover, since horror has its exciting special effects on making its audience relaxed, they are believed to be eligible to outcompete films in other genres. You may think being relaxed after watching a horror movie ridiculous, but it is true. Psychologically speaking, this has something to do with pressure from our modern society: watching horror films can be a good way to release pressure, because people can be set free from the reality while they are having extreme emotional experience given by horror films. That’s probably why so many horror movies are made in Japan, a country with extreme pressure. Considering about the everydayness today’s world: the same breakfast, the same company, the same daily routine, anxiety, depression... the demand of getting rid of reality would definitely increase, and therefore boom the demand for horror films. 
 
 
 ```{r, message= FALSE}
 # join the data of percent of different films
 join <- rbind(mu_percent, wes_percent,horror_percent)
-join
 
 #draw the picture of pecent of horror, ... films
 join_film <- ggplot(join,aes(x=production_year,y=percent,color = genre)) + 
@@ -113,3 +122,10 @@ join_film <- ggplot(join,aes(x=production_year,y=percent,color = genre)) +
 
 join_film
 ```
+
+Indeed, horror movies are outcompeting genres that are not able to allow their audience to have extreme emotion experiences. From the graph comparing the percentages (amount of the genre out of total amount of movies made that year) of horror movies with Musical and Western movies in Hollywood, the two genres Western and Musical were once way more popular than Horror; however when it gradually comes to the modern era, they both lost their popularity overtime. Till now, horror has outcompeted both of the two genres which can give their audiences neither extreme emotion experiences nor fantasies away from the real world.
+
+
+
+
+[^3]: Meslow, Scott. “How We Ended Up in the Golden Age of Horror Movies.” GQ, GQ, 27 Oct. 2017, www.gq.com/story/golden-age-of-horror-movies.
