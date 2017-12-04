@@ -5,6 +5,7 @@ date: "11/29/2017"
 output: 
   html_document:
     code_folding: hide
+    fig_width: 8
 ---
 
 The two recent Hollywood horror films [It](http://www.imdb.com/title/tt1396484/) and [Get Out](http://www.imdb.com/title/tt5052448/) have grabbed people’s attention by bombing at the box office and earning amazingly positive reviews. Their success more or less subverted people’s stereotype about horror movies: this genre of movies has no future as they are low-priced and boring, merely trying to make people scream. 
@@ -28,14 +29,17 @@ db <- dbConnect_scidb(dbname = "imdb")
 #a smaller table, years before 2017
 #Since some data is missing from 2018 to 2115, we filter out these years' data
 film_before_2017<-db %>%
-  dbGetQuery("SELECT t.id, t.title, t.production_year,
-             mi.info as info
-             FROM title t
-             Join movie_info as mi on mi.movie_id = t.id
-             where info_type_id = 3 #use index to speed up 
-             and production_year <= 2017
-             having production_year IS NOT NULL;")
+  dbGetQuery("SELECT t.id, t.title, t.production_year, t.kind_id,
+              mi.info as info
+              FROM title t
+              Join movie_info as mi on mi.movie_id = t.id
+              where info_type_id = 3 
+              and kind_id = 1 
+              and production_year <= 2017
+              having production_year is not null;")
+```
 
+```{r}
 #function that generate data about a certain genre
 focus_genre <- function(genre){
   film_before_2017 %>% 
@@ -46,11 +50,21 @@ horror_before_2017 <- focus_genre('Horror') #data abour horror movies before 201
 mu_before_2017 <- focus_genre('Musical') #data abour musical movies before 2017
 wes_before_2017 <- focus_genre('Western') #data abour western movies before 2017
 
+horror_before_2017 %>% arrange(production_year)
+```
+
+```{r}
+
 #The number of total films each year
 total_film = 
   film_before_2017%>%
   group_by(production_year) %>%
   summarise(total_num = n_distinct(id)) 
+
+wes_before_2017
+```
+
+```{r}
 
 #function that count how many films under certain genre each year
 count_number <- function(data){
@@ -62,6 +76,10 @@ count_number <- function(data){
 wes_before_2017 <- count_number(wes_before_2017) #How many Western films each year
 mu_before_2017 <- count_number(mu_before_2017) #How many Musical films each year
 horror_before_2017 <- count_number(horror_before_2017) #How many horror films each year
+
+```
+
+```{r}
 
 #function that count the percent of films under certain genre each year
 count_percent <- function(genre_data,genre_type) {
@@ -97,6 +115,7 @@ hor_num_film <- ggplot(horror_before_2017,aes(x=production_year,y=genre_num)) +
 
 hor_num_film
 ```
+
 
 
 From the graph looking at Hollywood horror movies, both the number and proportion of horror movies have been increasing for years. One reason behind their stable augmentation is that horror movies are usually low-budget but highly profitable, making them a safe bet for producers. For example, “Paranormal Activity” made by Blumhouse has earned 193 million dollars with a budget of only 15,000 dollars. [As said by Scott Mendelson](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68), “the horror genre has always been one that thrived on maximum returns for minimum cost.”[^1] With such advantages, horror films attract more and more investors, thus increasing their amount and market share. 
