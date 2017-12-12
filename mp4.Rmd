@@ -1,5 +1,5 @@
 ---
-title: "Horror is going to conquer the film industry!"
+title: "A Once Trashy Genre Becomes Viable"
 author: "Sichu Chang, Yining Hua, Chujun He"
 date: "11/29/2017"
 output: 
@@ -7,16 +7,31 @@ output:
     code_folding: hide
     fig_width: 8
 ---
+<style>
+body{
+line-height: 27px;
+font-size:18px;
+font-family: Times New Roman;
+}
+</style>
 
-The two recent Hollywood horror films [It](http://www.imdb.com/title/tt1396484/) and [Get Out](http://www.imdb.com/title/tt5052448/) have grabbed people’s attention by bombing at the box office and earning amazingly positive reviews. Their success more or less subverted people’s stereotype about horror movies: this genre of movies has no future as they are low-priced and boring, merely trying to make people scream. 
+![](http://www.sickchirpse.com/wp-content/uploads/2017/03/IT.jpg){.class width=800px}
 
 <br>
 
-On the contrary, far from being dismissed, horror movies are conquering the market today. According to the data about Hollywood movies in different genres, the number of horror movies has been increasing stably for years. As horror has its ability to make profits, concrete supports from the developing computer technology, and its eligibility to outcompete other genres because of its psychological effects on freeing people from stress, it has a great chance to obtain a bright future. 
+The two recent Hollywood horror films, [It](http://www.imdb.com/title/tt1396484/) and [Get Out](http://www.imdb.com/title/tt5052448/), have grabbed people’s attention.  During the opening weekend, the film It has made an incredible [gross of 123 million dollars](http://www.boxofficemojo.com/movies/?id=it.htm), about 4 times of the average gross of all the movies going on during this period of time, ranking the first among more than four thousand  theaters. Get Out, no worse than It, has got an average rating of [4.2 out of 5](https://www.rottentomatoes.com/m/get_out) on Rotten Tomatoes, a website with more than sixtysix thousand user ratings. [“Funny, scary, and thought-provoking.”](https://www.rottentomatoes.com/m/get_out) The Critics Consensus said so. The critical success of these two films has made another contribution to the progress of subverting the common stereotype of horror movies: this genre of movies is superficial, derivative and predictable. 
 
 <br>
 
-First, more and more horror movies will be made in the future because of their great ability to bring back profits. 
+In fact, even if people commonly hold this kind of stereotype of horror films, horror films has been for nearly all the time meliorating. From the data about movies made in Hollywood, the number of horror movies being produced has been increasing for years. Considering horror movies’ great ability to make profits and their ability to free people from stressful lives, this increasing trend is likely to continue in the future. At the same time, developing computer technology allows horror movies to become more and more attractive. With the increase both in their quantity and quality, horror movies have a great chance to obtain a bright future. 
+
+
+<br>
+
+
+
+Hollywood has been making more and more horror films over the past years, and this trend could continue due to horror’s profitability. To investigate the change of the amount of horror movies made in Hollywood, we looked at the data from IMDb (The Internet Movie Database). For the sake of complete data, the data is filtered to be only about horror movies from 1895 to 2016. 
+
 
 ```{r, message= FALSE}
 #loading the packages
@@ -25,140 +40,154 @@ library(mdsr)
 library(RMySQL)
 library(ggplot2)
 
+
 db <- dbConnect_scidb(dbname = "imdb")
-#a smaller table, years before 2017
-#Since some data is missing from 2018 to 2115, we filter out these years' data
-film_before_2017<-db %>%
-  dbGetQuery("SELECT t.id, t.title, t.production_year, t.kind_id,
-              mi.info as info
+
+#American featured movies, produced before 2017
+long_us_film<-db %>%
+  dbGetQuery("SELECT production_year, count(distinct t.id) as num_movies
               FROM title t
-              Join movie_info as mi on mi.movie_id = t.id
-              where info_type_id = 3 
-              and kind_id = 1 
-              and production_year <= 2017
-              having production_year is not null;")
-```
+              LEFT JOIN movie_info mi ON mi.movie_id = t.id
+              LEFT JOIN movie_info mi2 ON mi2.movie_id = t.id
+              WHERE kind_id = 1 AND production_year < 2017
+              AND mi.info_type_id = 1 AND mi.info >= 70 #runtime >=70
+              AND mi2.info_type_id = 8 AND mi2.info = 'USA' #made in USA
+              GROUP BY production_year;")
 
-```{r}
-#function that generate data about a certain genre
-focus_genre <- function(genre){
-  film_before_2017 %>% 
-    filter(info == genre)
-}
+#American featured horror movies, produced before 2017 
+long_horror_us_film<-db %>%
+  dbGetQuery("SELECT production_year, count(distinct t.id) as num_movies
+              FROM title t
+              LEFT JOIN movie_info mi ON mi.movie_id = t.id
+              LEFT JOIN movie_info mi2 ON mi2.movie_id = t.id
+              LEFT JOIN movie_info mi3 ON mi3.movie_id = t.id
+              WHERE kind_id = 1 AND production_year < 2017 
+              AND mi.info_type_id = 1 AND mi.info >= 70 #runtime >= 70
+              AND mi2.info_type_id = 8 AND mi2.info = 'USA' #made in USA
+              AND mi3.info_type_id = 3 AND mi3.info = 'Horror' #genre:horror
+              GROUP BY production_year;")
 
-horror_before_2017 <- focus_genre('Horror') #data abour horror movies before 2017
-mu_before_2017 <- focus_genre('Musical') #data abour musical movies before 2017
-wes_before_2017 <- focus_genre('Western') #data abour western movies before 2017
-
-horror_before_2017 %>% arrange(production_year)
-```
-
-```{r}
-
-#The number of total films each year
-total_film = 
-  film_before_2017%>%
-  group_by(production_year) %>%
-  summarise(total_num = n_distinct(id)) 
-
-wes_before_2017
-```
-
-```{r}
-
-#function that count how many films under certain genre each year
-count_number <- function(data){
-  data %>% 
-    group_by(production_year) %>%
-    summarise(genre_num = n_distinct(id))
-  }
-
-wes_before_2017 <- count_number(wes_before_2017) #How many Western films each year
-mu_before_2017 <- count_number(mu_before_2017) #How many Musical films each year
-horror_before_2017 <- count_number(horror_before_2017) #How many horror films each year
-
-```
-
-```{r}
-
-#function that count the percent of films under certain genre each year
-count_percent <- function(genre_data,genre_type) {
-  total_film %>% left_join(genre_data, by = 'production_year') %>%
-    mutate(genre_num = ifelse(is.na(genre_num),0,genre_num)) %>% #0 if no such film
-    mutate(percent = genre_num/total_num) %>% #calculate the percent
-    mutate(genre = genre_type) %>% #record the genre type
-    select(production_year, percent, genre)
-  
-}
-
-
-horror_percent <-count_percent(horror_before_2017,'Horror') #how many percent of films are horror films each year
-wes_percent <- count_percent(wes_before_2017, 'Western')
-mu_percent <- count_percent(mu_before_2017,'Musical')
-
-# draw the picture of percent of horror films
-hor_percent_film <- ggplot(horror_percent,aes(x=production_year,y=percent)) + 
+#graph about the change of the number of American featured horror movies
+hor_num_film <- ggplot(long_horror_us_film,aes(x=production_year,y=num_movies)) + 
   geom_line() + 
   theme_minimal() +
-  scale_y_continuous(labels = scales::percent)+
-  labs(y = 'Percent of Horror Movies Over all Movies') +
-  ggtitle('The Percentage of Horror Movies')
-
-hor_percent_film
-
-# draw a picture of the number of horror films
-hor_num_film <- ggplot(horror_before_2017,aes(x=production_year,y=genre_num)) + 
-  geom_line() + 
-  theme_minimal() +
-  labs(y = 'Number of Horror Movies') +
-  ggtitle('The Number of Horror Movies')
+  labs(y = 'number of horror movies', x = 'production year') +
+  ggtitle('The Number of Horror Movies')+
+  scale_x_continuous(breaks = seq(from = 1920, to = 2020, by = 20))
 
 hor_num_film
 ```
 
 
-
-From the graph looking at Hollywood horror movies, both the number and proportion of horror movies have been increasing for years. One reason behind their stable augmentation is that horror movies are usually low-budget but highly profitable, making them a safe bet for producers. For example, “Paranormal Activity” made by Blumhouse has earned 193 million dollars with a budget of only 15,000 dollars. [As said by Scott Mendelson](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68), “the horror genre has always been one that thrived on maximum returns for minimum cost.”[^1] With such advantages, horror films attract more and more investors, thus increasing their amount and market share. 
-
-
-[^1]:Pomerantz, Dorothy. “The Triumph Of 'Paranormal Activity'.” Forbes, Forbes Magazine, 18 Oct. 2012, www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity.
-
-<br>
-
-At the same time, with the development of technology,  horror movies have way more possibilities to realize different plots than ever before, thanks to the growing range of special effects available. Due to the lack of special effects, those horror movies emerged around the 1890s are actually quite different from the horror movies today. Take a look back at the first horror movie made by Hollywood, the execution of Mary,Queen of Scotland, a 18-second-long film depicting the execution of Mary, Queen of Scots[^2]: 
-
-[^2]:Clark, Alfred, and William Heise. The execution of Mary, Queen of Scots.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BIOLsH93U1Q" frameborder="0" allowfullscreen></iframe>
-
-From the video we saw a blindfolded Mary being led to the execution block; The executioner  chopped off queen mary’s head, which was actually replaced by a mannequin, and this is the only special effect applied by the film. Due to the lack of special effect technology, the most scaring thing people could make at that time was the execution. However, today the themes of horror movies range from bloody murders to eerie suspense, from weird delusion to sophisticated monsters. More and more trends will be realized by horror as a general approach, such as the famous modernist approach which is so popular among art lovers and psychology lovers - the surrealist cinema. Therefore it’s pretty sure that with more possible special effects, producers have more space to produce better and more intriguing horror movies about different themes in the future.
-
-<br>
-
-Moreover, since horror has its exciting special effects on making its audience relaxed, they are believed to be eligible to outcompete films in other genres. You may think being relaxed after watching a horror movie ridiculous, but it is true. Psychologically speaking, this has something to do with pressure from our modern society: watching horror films can be a good way to release pressure, because people can be set free from the reality while they are having extreme emotional experience given by horror films. That’s probably why so many horror movies are made in Japan, a country with extreme pressure. Considering about the everydayness today’s world: the same breakfast, the same company, the same daily routine, anxiety, depression... the demand of getting rid of reality would definitely increase, and therefore boom the demand for horror films. 
+The yearly amount of films Hollywood made has been increasing over most of the past years. Especially after 2000, the yearly amount has been increasing almost exponentially. Since horror films are usually low-budget but highly profitable, many film producers would consider them a safe bet. This might be an important reason why the yearly amount of horror films has been increasing so dramatically during the past years. Take as an example, “Paranormal Activity”, made by Blumhouse, has earned more than [193 million dollars](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) with a budget of only 15 thousand dollars. [“The horror genre has always been one that thrived on maximum returns for minimum cost,”](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) said Scott Mendelson, a film critic and box office pundit for Forbes. The reason might be that there are actually “formulas” for horror films. Since horror films are mainly designed for triggering people’s fear, the content, instead, becomes not so important. All you need for making a horror film is to make the film horrible, like for making a comedy, all you need is to make the film easy and funny. Therefore, it would be relatively easier for producers to make a horror film rather than some other genres, such like action. 
 
 
-```{r, message= FALSE}
-# join the data of percent of different films
-join <- rbind(mu_percent, wes_percent,horror_percent)
+Additionally, horror movies can outcompete some genres. Musicals and westerns are two types of well-defined genres. The two genres were both once more popular than Horror( the yearly amount of films made in either Musicals or Westerns was once more than double time of the yearly amount of films made in Horror). However, when it gradually comes to the modern era, while the genre Horror becomes so popular, Musicals and Westerns have both lost their popularity overtime.
 
-#draw the picture of pecent of horror, ... films
-join_film <- ggplot(join,aes(x=production_year,y=percent,color = genre)) + 
+```{r, message=FALSE}
+
+#American featured musical movies, produced before 2017
+long_mus_us_film<-db %>%
+  dbGetQuery("SELECT production_year, count(distinct t.id) as num_movies
+              FROM title t
+              LEFT JOIN movie_info mi ON mi.movie_id = t.id
+              LEFT JOIN movie_info mi2 ON mi2.movie_id = t.id
+              LEFT JOIN movie_info mi3 ON mi3.movie_id = t.id
+              WHERE kind_id = 1 AND production_year < 2017
+              AND mi.info_type_id = 1 AND mi.info >= 70 #runtime >= 70
+              AND mi2.info_type_id = 8 AND mi2.info = 'USA' #made in USA
+              AND mi3.info_type_id = 3 AND mi3.info = 'Musical' #genre Musical
+              GROUP BY production_year;")
+
+#American featured western movies, produced before 2017
+long_wes_us_film<-db %>%
+  dbGetQuery("SELECT production_year, count(distinct t.id) as num_movies
+              FROM title t
+              LEFT JOIN movie_info mi ON mi.movie_id = t.id
+              LEFT JOIN movie_info mi2 ON mi2.movie_id = t.id
+              LEFT JOIN movie_info mi3 ON mi3.movie_id = t.id
+              WHERE kind_id = 1 AND production_year < 2017
+              AND mi.info_type_id = 1 AND mi.info >= 70 #runtime >=70
+              AND mi2.info_type_id = 8 AND mi2.info = 'USA' #made in USA
+              AND mi3.info_type_id = 3 AND mi3.info = 'Western' #genre Western
+              GROUP BY production_year;")
+
+#Add genre information to each data table
+long_horror_us_film <- long_horror_us_film %>% mutate(genre = 'Horror')
+long_mus_us_film <- long_mus_us_film %>% mutate(genre = 'Musical')
+long_wes_us_film <- long_wes_us_film %>% mutate(genre = 'Western')
+
+# join the data of number of different films
+join <- rbind(long_horror_us_film,long_mus_us_film,long_wes_us_film)
+
+#draw the picture of number of horror, musical, western films
+join_film <- ggplot(join,aes(x=production_year,y=num_movies,color = genre)) + 
   geom_line() + 
   theme_minimal() +
-  scale_y_continuous(labels = scales::percent)
+  labs(x = 'production year', y = 'number of films')+
+  scale_x_continuous(breaks = seq(from = 1920, to = 2020, by = 20))
 
 join_film
 ```
 
-Indeed, horror movies are outcompeting genres that are not able to allow their audience to have extreme emotion experiences. From the graph comparing the percentages (amount of the genre out of total amount of movies made that year) of horror movies with Musical and Western movies in Hollywood, the two genres Western and Musical were once way more popular than Horror; however when it gradually comes to the modern era, they both lost their popularity overtime. Till now, horror has outcompeted both of the two genres which can give their audiences neither extreme emotion experiences nor fantasies away from the real world.
+One reason for horror to remain popular is that it is able to comfort people’s anxiety. As more and more people today are suffering from psychological stress, there will be more and more people who need horror movies to release their stress. 
+The idea that anxious people can find comfort in horror movies might be counterintuitive. However, Dr.Mathias Clasen, a social scientist studying horror films and mental health for more than 15 years, explained it well. ["I'm not surprised to learn that some anxious individuals find horror films therapeutic,”](https://broadly.vice.com/en_us/article/a3wdzk/why-some-anxious-people-find-comfort-in-horror-movies) he said. “The genre allows us to voluntarily—and under controlled circumstances—get experience with negative emotion.” Then he explained further, saying that “there’s psychological distance when we watch a horror film. We know it’s not real—or at least, some parts of our brain know it isn’t real…” 
+By letting people experience bad feelings but knowing that nothing really bad would happen, horror movies actually equip people with greater courage to confront and deal with fear or anxiety. Thus, “exposure to horror films can be gratifying when the negative emotions caused by the film are manageable," as Dr.Mathias Clasen said.
 
 <br>
 
-Some critics are arguing that horror movies will never ascend the place of refinement, that Hollywood is only taking horror as its last method of making profits. Take an example, [Scott Meslow, claims in his journal](https://www.gq.com/story/golden-age-of-horror-movies) that “Hollywood has long had a kind of reflective snobbishness about horror movies—a self-perpetuating cycle in which studios, largely writing horror movies off as cheap and lazy, would race to the bottom with cheap, lazy horror movies.”[^3] However, people’s low expectations do not really affect the brilliant performance of horror movies. The real data still shows its trend of increasing, which means that people are still embracing horror films as shown in graph1. The recent two horror films, “It” and “Get Out” have gained popularity and surprised film industry but they are made with low cost. This success is a good start and implies the bright future of horror movies. Audience perhaps are also looking forward for the releasing of more attractive horror films. Since people choose to watch horror movies to alleviate great pressure from daily life, it is impossible for them to stop watching horror movies and find another way to entertain immediately, especially a way as convenient and cheap as watching horror movies. With all these advantages, horror film  owns a bright future. 
+At the same time, the development of computer technology allows more and more elaborate special effects to be available for horror movies, and the themes for horror movies can be more diverse. Take a look back at the first horror movie produced in 1895, the execution of Mary, Queen of Scotland, a 18-second-long film depicting the execution of Mary, Queen of Scots: 
 
-[^3]: Meslow, Scott. “How We Ended Up in the Golden Age of Horror Movies.” GQ, GQ, 27 Oct. 2017, www.gq.com/story/golden-age-of-horror-movies.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BIOLsH93U1Q" frameborder="0" allowfullscreen></iframe>
+
+A blindfolded Mary is being led to the execution block; the executioner chopped off queen Mary’s head, which was actually replaced by a mannequin. This was the only special effect applied to this  film. Due to the lack of special effects, the most frightening scene people could make at that time was the execution which looks not realistic at all. However, today, people not only can make violence (like a beheading) look 100% realistic, but also can make monsters look like real with the help of computer. Thus, the themes of horror movies range from bloody murders to eerie suspense, from weird delusion to sophisticated monsters. More and more new themes will be realized by horror as a general approach. Therefore, it’s clear that with more possible special effects, producers will have more space to produce better and more intriguing horror movies about different themes in the future.
+
 
 <br>
 
-To sum up, horror movies are welcoming its new bright splendid future. Nevertheless, we have to say, the real situation depends on the real thoughts people have towards horror movies. In further study to foresee the future of horror movies, a survey about people’s real ideas about horror movie will be necessary.
+However, some critics are arguing that horror movies will never ascend to a place of refinement. They believe that Hollywood is only using horror to make profits, and [“relying on something isn’t the same as respecting it.”](https://www.gq.com/story/golden-age-of-horror-movies) They claim that since Hollywood just focuses on revenues, it will be too busy making a lot of cheap but profitable horror movies, and not make good horror movies. To examine the performance of horror movies, we investigated the data provided by IMDb. 
+
+```{r, message= FALSE}
+#American featured horror movies, produced before 2017, with ratings >=6
+good_us_horror<-db %>%
+  dbGetQuery("SELECT production_year, count(distinct t.id) as num_good_horror
+              FROM title t
+              LEFT JOIN movie_info mi ON mi.movie_id = t.id
+              LEFT JOIN movie_info mi2 ON mi2.movie_id = t.id
+              LEFT JOIN movie_info_idx mii ON mii.movie_id = t.id
+              LEFT JOIN movie_info mi3 ON mi3.movie_id = t.id
+              WHERE kind_id = 1 AND production_year < 2017
+              AND mi.info_type_id = 1 AND mi.info >= 70 #runtime >=70
+              AND mi2.info_type_id = 8 AND mi2.info = 'USA' #made in USA
+              AND mi3.info_type_id = 3 AND mi3.info = 'Horror' #horror movies
+              AND mii.info_type_id = 101 AND mii.info >= 6 #ratings >=6
+              GROUP BY production_year;")
+
+#Calculate the percent of high rating horror movies over all horror movies in USA in recent years 
+percent_good_horror <- long_horror_us_film %>%
+  left_join(good_us_horror, by = 'production_year') %>%
+  mutate(good_horror_num = ifelse(is.na(num_good_horror),0,num_good_horror)) %>%
+  mutate(percent = good_horror_num/num_movies) %>%
+  filter(production_year >= 2005) 
+
+#Plot the change of percent of high rating horror movies
+percent_good <- ggplot(percent_good_horror,aes(x=production_year,y=percent)) + 
+  geom_line() + 
+  theme_minimal() +
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_continuous(breaks = seq(from = 2005, to = 2016, by = 2))+
+  labs(y = 'percent of good horror movies', x = 'production year') +
+  ggtitle('The Percent of Good Horror Movies Over All Horror Movies')
+
+percent_good
+```
+
+
+In recent years, the percentage of good horror (with ratings more than 6 out of 10)[^1] movies keeps increasing, which means that horror movies are actually getting better reviews. And the recent two horror films, “It” and “Get Out”, are two vivid examples of elegant horror movies as they have gained amazingly good critical reviews. Their success rebuts those critics’ negative expectations about horror movies and implies the bright future of the performance of horror movies. 
+
+[^1]:In [IMDb rating scale](http://www.imdb.com/list/ls070143432/), 5 means average, 6 means good, 7 menas good +, 8 means very good, 9 means excellent and 10 means amazing. So we define good horror movies as horror movies with ratings greater than or equal to 6 (out of 10).
+
+<br>
+
+To sum up, as both the quantity and quality of horror movies increase, horror movies are welcoming a splendid future. Nevertheless, we have to say, the real situation depends on the thoughts people have towards horror movies. In further study to foresee the future of horror movies, a survey about people’s real ideas about horror movies will be necessary.
+
