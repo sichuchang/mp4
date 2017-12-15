@@ -1,7 +1,7 @@
 ---
 title: "A Once Trashy Genre Becomes Viable"
 author: "Sichu Chang, Yining Hua, Chujun He"
-date: "11/29/2017"
+date: '`r format(Sys.Date(), "%B %e, %Y")`'
 output: 
   html_document:
     code_folding: hide
@@ -19,7 +19,7 @@ font-family: Times New Roman;
 
 <br>
 
-The two recent Hollywood horror films [*It*](http://www.imdb.com/title/tt1396484/) and [*Get Out*](http://www.imdb.com/title/tt5052448/) show remarkable success with the public. During the opening weekend, the film *It* has made an incredible [gross of 123 million dollars](http://www.boxofficemojo.com/movies/?id=it.htm), about 4 times of the average gross of all the movies going on during this period of time, ranking the first among more than four thousand  theaters. *Get Out*, no under than *It*, has got an average rating of [4.2 out of 5](https://www.rottentomatoes.com/m/get_out) on Rotten Tomatoes, a website with more than sixtysix thousand user ratings. [“Funny, scary, and thought-provoking,”](https://www.rottentomatoes.com/m/get_out) the Critics Consensus said. The common stereotype of horror  movies used to be superficial, derivative and predictable. The critical success of these two films has made another contribution to the progress of subverting this common stereotype of horror movies. 
+The two recent Hollywood horror films [*It*](http://www.imdb.com/title/tt1396484/) and [*Get Out*](http://www.imdb.com/title/tt5052448/) show remarkable success with the public. During the opening weekend, the film *It* has made an incredible [gross of 123 million dollars](http://www.boxofficemojo.com/movies/?id=it.htm), about 4 times of the average gross of all the movies going on during this period of time, ranking the first among more than four thousand  theaters. Similarly, *Get Out* has got an average rating of [4.2 out of 5](https://www.rottentomatoes.com/m/get_out) on Rotten Tomatoes, a website with more than sixty six thousand user ratings. [“Funny, scary, and thought-provoking,”](https://www.rottentomatoes.com/m/get_out) the Critics Consensus said. The common stereotype of horror  movies used to be superficial, derivative and predictable. The critical success of these two films has made another contribution to the progress of subverting this common stereotype of horror movies. 
 
 
 <br>
@@ -76,7 +76,7 @@ hor_num_film <- ggplot(long_horror_us_film,aes(x=production_year,y=num_movies)) 
 hor_num_film
 ```
 
-Since horror films are usually low-budget but highly profitable,  many film producers consider them a safe bet. This might be an important reason why the yearly amount of horror films has been increasing so dramatically during the past years. [“The horror genre has always been one that thrived on maximum returns for minimum cost,”](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) said Scott Mendelson, a film critic and box office pundit for Forbes. Take as an example, “Paranormal Activity”, made by Blumhouse, has earned more than [193 million dollars](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) with a budget of only 15 thousand dollars. The reason might be that there are actually “formulas” for horror films. Since horror films are mainly designed for triggering people’s fear, the content, instead, becomes not so important. All you need for making a horror film is to make the film horrible, like for making a comedy, where all you need is to make the film easy and funny. Therefore, it would be relatively easier for producers to make a horror film rather than some other genres, such like action. 
+Since horror films are usually low-budget but highly profitable,  many film producers consider them a safe bet. This might be an important reason why the yearly amount of horror films has been increasing so dramatically during the past years. [“The horror genre has always been one that thrived on maximum returns for minimum cost,”](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) said Scott Mendelson, a film critic and box office pundit for Forbes. Take as an example, [*Paranormal Activity*](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68), made by Blumhouse, has earned more than 193 million dollars with a budget of only 15 thousand dollars. The reason might be that there are actually “formulas” for horror films. Since horror films are mainly designed for triggering people’s fear, the content, instead, becomes not so important. All you need for making a horror film is to make the film horrible, like for making a comedy, where all you need is to make the film easy and funny. Therefore, it would be relatively easier for producers to make a horror film rather than some other genres, such like action. 
 
 
 Additionally, horror movies can outcompete some genres. Musicals and westerns are two types of well-defined genres. The two genres were both once more popular than horror( the yearly number of films made in either Musicals or Westerns was once more than double time of the yearly amount of films made in horror). However, when it gradually comes to the modern era, while the genre horror has become so popular, musicals and westerns have both lost their popularity overtime. 
@@ -181,12 +181,12 @@ percent_good
 ```
 
 
-In recent years, the percentage of good horror movies keeps increasing, which means that horror movies are actually getting better reviews. And the recent two horror films, *It* and *Get Out*, are two vivid examples of elegant horror movies as they have gained amazingly good critical reviews. Their success rebuts those critics’ negative expectations about horror movies and implies the bright future of the performance of horror movies. 
+In recent years, the percentage of horror movies with good reviews keeps increasing, which means that horror movies made today are actually getting better. And the recent two horror films, *It* and *Get Out*, are two vivid examples of elegant horror movies as they have gained amazingly good critical reviews. Their success rebuts those critics’ negative expectations about horror movies and implies the bright future of the performance of horror movies. 
 
 
 <br>
 
-To sum up, as both the quantity and quality of horror movies increase, horror movies are welcoming a splendid future. Nevertheless, we have to say, the real situation will depend on the thoughts people have towards horror movies. Therefore, a survey about people’s real impression of horror is necessary, before we can make an assertion about the future of  horror movies.[^2]
+To sum up, as both the quantity and quality of horror movies increase, horror movies are welcoming a splendid future. Nevertheless, we have to say, the real situation will depend on the thoughts people have towards horror movies. Therefore, a survey about people’s real impressions of horror is necessary, before we can make an assertion about the future of  horror movies.[^2]
 
 [^2]: Link to GitHub: https://github.com/sichuchang/mp4
 
