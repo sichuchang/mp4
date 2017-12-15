@@ -19,19 +19,17 @@ font-family: Times New Roman;
 
 <br>
 
-The two recent Hollywood horror films, [It](http://www.imdb.com/title/tt1396484/) and [Get Out](http://www.imdb.com/title/tt5052448/), have grabbed people’s attention.  During the opening weekend, the film It has made an incredible [gross of 123 million dollars](http://www.boxofficemojo.com/movies/?id=it.htm), about 4 times of the average gross of all the movies going on during this period of time, ranking the first among more than four thousand  theaters. Get Out, no worse than It, has got an average rating of [4.2 out of 5](https://www.rottentomatoes.com/m/get_out) on Rotten Tomatoes, a website with more than sixtysix thousand user ratings. [“Funny, scary, and thought-provoking.”](https://www.rottentomatoes.com/m/get_out) The Critics Consensus said so. The critical success of these two films has made another contribution to the progress of subverting the common stereotype of horror movies: this genre of movies is superficial, derivative and predictable. 
-
-<br>
-
-In fact, even if people commonly hold this kind of stereotype of horror films, horror films has been for nearly all the time meliorating. From the data about movies made in Hollywood, the number of horror movies being produced has been increasing for years. Considering horror movies’ great ability to make profits and their ability to free people from stressful lives, this increasing trend is likely to continue in the future. At the same time, developing computer technology allows horror movies to become more and more attractive. With the increase both in their quantity and quality, horror movies have a great chance to obtain a bright future. 
+The two recent Hollywood horror films [*It*](http://www.imdb.com/title/tt1396484/) and [*Get Out*](http://www.imdb.com/title/tt5052448/) show remarkable success with the public. During the opening weekend, the film *It* has made an incredible [gross of 123 million dollars](http://www.boxofficemojo.com/movies/?id=it.htm), about 4 times of the average gross of all the movies going on during this period of time, ranking the first among more than four thousand  theaters. *Get Out*, no under than *It*, has got an average rating of [4.2 out of 5](https://www.rottentomatoes.com/m/get_out) on Rotten Tomatoes, a website with more than sixtysix thousand user ratings. [“Funny, scary, and thought-provoking,”](https://www.rottentomatoes.com/m/get_out) the Critics Consensus said. The common stereotype of horror  movies used to be superficial, derivative and predictable. The critical success of these two films has made another contribution to the progress of subverting this common stereotype of horror movies. 
 
 
 <br>
 
+In fact, even if people commonly hold this kind of stereotype of horror films,  horror films has been for nearly all the time promising. From the data about movies made in Hollywood, the number of horror movies being produced has been increasing for years. Considering horror movies’ great ability to make profits and their ability to free people from stressful lives, this increasing trend is likely to continue in the future. At the same time, developing computer technology allows horror movies to become more and more attractive. With the increase both in their quantity and quality, horror movies have a great chance to obtain a bright future. 
 
 
-Hollywood has been making more and more horror films over the past years, and this trend could continue due to horror’s profitability. To investigate the change of the amount of horror movies made in Hollywood, we looked at the data from IMDb (The Internet Movie Database). For the sake of complete data, the data is filtered to be only about horror movies from 1895 to 2016. 
+<br>
 
+To investigate the change of the amount of horror movies made in Hollywood, we looked at the data from IMDb (The Internet Movie Database). For the sake of complete data, the data is filtered to include only horror movies from 1895 to 2016. The yearly number of films Hollywood made has been increasing over most of the past years. Especially after 2000, the yearly amount has increased almost exponentially.  
 
 ```{r, message= FALSE}
 #loading the packages
@@ -78,11 +76,11 @@ hor_num_film <- ggplot(long_horror_us_film,aes(x=production_year,y=num_movies)) 
 hor_num_film
 ```
 
+Since horror films are usually low-budget but highly profitable,  many film producers consider them a safe bet. This might be an important reason why the yearly amount of horror films has been increasing so dramatically during the past years. [“The horror genre has always been one that thrived on maximum returns for minimum cost,”](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) said Scott Mendelson, a film critic and box office pundit for Forbes. Take as an example, “Paranormal Activity”, made by Blumhouse, has earned more than [193 million dollars](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) with a budget of only 15 thousand dollars. The reason might be that there are actually “formulas” for horror films. Since horror films are mainly designed for triggering people’s fear, the content, instead, becomes not so important. All you need for making a horror film is to make the film horrible, like for making a comedy, where all you need is to make the film easy and funny. Therefore, it would be relatively easier for producers to make a horror film rather than some other genres, such like action. 
 
-The yearly amount of films Hollywood made has been increasing over most of the past years. Especially after 2000, the yearly amount has been increasing almost exponentially. Since horror films are usually low-budget but highly profitable, many film producers would consider them a safe bet. This might be an important reason why the yearly amount of horror films has been increasing so dramatically during the past years. Take as an example, “Paranormal Activity”, made by Blumhouse, has earned more than [193 million dollars](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) with a budget of only 15 thousand dollars. [“The horror genre has always been one that thrived on maximum returns for minimum cost,”](https://www.forbes.com/sites/dorothypomerantz/2012/10/18/the-triumph-of-paranormal-activity/#12bc45777b68) said Scott Mendelson, a film critic and box office pundit for Forbes. The reason might be that there are actually “formulas” for horror films. Since horror films are mainly designed for triggering people’s fear, the content, instead, becomes not so important. All you need for making a horror film is to make the film horrible, like for making a comedy, all you need is to make the film easy and funny. Therefore, it would be relatively easier for producers to make a horror film rather than some other genres, such like action. 
 
+Additionally, horror movies can outcompete some genres. Musicals and westerns are two types of well-defined genres. The two genres were both once more popular than horror( the yearly number of films made in either Musicals or Westerns was once more than double time of the yearly amount of films made in horror). However, when it gradually comes to the modern era, while the genre horror has become so popular, musicals and westerns have both lost their popularity overtime. 
 
-Additionally, horror movies can outcompete some genres. Musicals and westerns are two types of well-defined genres. The two genres were both once more popular than Horror( the yearly amount of films made in either Musicals or Westerns was once more than double time of the yearly amount of films made in Horror). However, when it gradually comes to the modern era, while the genre Horror becomes so popular, Musicals and Westerns have both lost their popularity overtime.
 
 ```{r, message=FALSE}
 
@@ -130,22 +128,22 @@ join_film <- ggplot(join,aes(x=production_year,y=num_movies,color = genre)) +
 join_film
 ```
 
-One reason for horror to remain popular is that it is able to comfort people’s anxiety. As more and more people today are suffering from psychological stress, there will be more and more people who need horror movies to release their stress. 
-The idea that anxious people can find comfort in horror movies might be counterintuitive. However, Dr.Mathias Clasen, a social scientist studying horror films and mental health for more than 15 years, explained it well. ["I'm not surprised to learn that some anxious individuals find horror films therapeutic,”](https://broadly.vice.com/en_us/article/a3wdzk/why-some-anxious-people-find-comfort-in-horror-movies) he said. “The genre allows us to voluntarily—and under controlled circumstances—get experience with negative emotion.” Then he explained further, saying that “there’s psychological distance when we watch a horror film. We know it’s not real—or at least, some parts of our brain know it isn’t real…” 
-By letting people experience bad feelings but knowing that nothing really bad would happen, horror movies actually equip people with greater courage to confront and deal with fear or anxiety. Thus, “exposure to horror films can be gratifying when the negative emotions caused by the film are manageable," as Dr.Mathias Clasen said.
+One reason for horror to remain popular is that it is able to comfort people’s anxiety. As more and more people today are suffering from psychological stress, there will be more and more people who need horror movies to release their stress. The idea that anxious people can find comfort in horror movies might be counterintuitive. However, Dr.Mathias Clasen, a social scientist studying horror films and mental health for more than 15 years, explained it well. ["I'm not surprised to learn that some anxious individuals find horror films therapeutic,”](https://broadly.vice.com/en_us/article/a3wdzk/why-some-anxious-people-find-comfort-in-horror-movies) he said. “The genre allows us to voluntarily—and under controlled circumstances—get experience with negative emotion.” Then he described the exact effects, saying that “there’s psychological distance when we watch a horror film. We know it’s not real—or at least, some parts of our brain know it isn’t real…” By letting people experience bad feelings but knowing that nothing really bad would happen, horror movies actually equip people with greater courage to confront and deal with fear or anxiety. Thus, “exposure to horror films can be gratifying when the negative emotions caused by the film are manageable," as Dr.Mathias Clasen said.
 
 <br>
 
-At the same time, the development of computer technology allows more and more elaborate special effects to be available for horror movies, and the themes for horror movies can be more diverse. Take a look back at the first horror movie produced in 1895, the execution of Mary, Queen of Scotland, a 18-second-long film depicting the execution of Mary, Queen of Scots: 
+At the same time, the development of computer technology allows more and more elaborate special effects to be available for horror movies, and the themes for horror movies can be more diverse. Take a look back at the first horror movie produced in 1895, *the execution of Mary, Queen of Scotland*, a 18-second-long film depicting the execution of Mary, Queen of Scots: 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BIOLsH93U1Q" frameborder="0" allowfullscreen></iframe>
 
-A blindfolded Mary is being led to the execution block; the executioner chopped off queen Mary’s head, which was actually replaced by a mannequin. This was the only special effect applied to this  film. Due to the lack of special effects, the most frightening scene people could make at that time was the execution which looks not realistic at all. However, today, people not only can make violence (like a beheading) look 100% realistic, but also can make monsters look like real with the help of computer. Thus, the themes of horror movies range from bloody murders to eerie suspense, from weird delusion to sophisticated monsters. More and more new themes will be realized by horror as a general approach. Therefore, it’s clear that with more possible special effects, producers will have more space to produce better and more intriguing horror movies about different themes in the future.
+A blindfolded Mary is being led to the execution block; the executioner chops off Queen Mary’s head, which was actually replaced by a mannequin. This was the only special effect applied to this film. Due to the lack of special effects, the most frightening scene people could make at that time was the execution, which looks not realistic at all. However, today, people not only can make violence (like a beheading) look 100% realistic, but also can make monsters look real with the help of computer. Thus, the themes of horror movies range from bloody murders to eerie suspense, from weird delusion to sophisticated monsters. More and more new themes will be realized by horror as a general approach. Therefore, it’s clear that with more possible special effects, producers will have more space to produce better and more intriguing horror movies about different themes in the future.
 
 
 <br>
 
-However, some critics are arguing that horror movies will never ascend to a place of refinement. They believe that Hollywood is only using horror to make profits, and [“relying on something isn’t the same as respecting it.”](https://www.gq.com/story/golden-age-of-horror-movies) They claim that since Hollywood just focuses on revenues, it will be too busy making a lot of cheap but profitable horror movies, and not make good horror movies. To examine the performance of horror movies, we investigated the data provided by IMDb. 
+However, some critics are arguing that horror movies will never ascend to a place of refinement. They believe that   Hollywood is only using horror to make a profit. However, [“relying on something isn’t the same as respecting it.”](https://www.gq.com/story/golden-age-of-horror-movies) They claim that since Hollywood just assessment on revenues, it will be too busy making a lot of cheap but profitable horror movies, and not make good horror movies. To examine the performance of horror movies, we investigated the data provided by IMDb. Here we consider a film as good if its rating exceeds 6 points out of 10.[^1]
+
+[^1]:In [IMDb rating scale](http://www.imdb.com/list/ls070143432/), 5 means average, 6 means good, 7 menas good +, 8 means very good, 9 means excellent and 10 means amazing. So we define good horror movies as horror movies with ratings greater than or equal to 6 (out of 10).
 
 ```{r, message= FALSE}
 #American featured horror movies, produced before 2017, with ratings >=6
@@ -177,17 +175,19 @@ percent_good <- ggplot(percent_good_horror,aes(x=production_year,y=percent)) +
   scale_y_continuous(labels = scales::percent)+
   scale_x_continuous(breaks = seq(from = 2005, to = 2016, by = 2))+
   labs(y = 'percent of good horror movies', x = 'production year') +
-  ggtitle('The Percent of Good Horror Movies Over All Horror Movies')
+  ggtitle('The Percent of Good Horror Movies (Ratings > 6) Over All Horror Movies')
 
 percent_good
 ```
 
 
-In recent years, the percentage of good horror (with ratings more than 6 out of 10)[^1] movies keeps increasing, which means that horror movies are actually getting better reviews. And the recent two horror films, “It” and “Get Out”, are two vivid examples of elegant horror movies as they have gained amazingly good critical reviews. Their success rebuts those critics’ negative expectations about horror movies and implies the bright future of the performance of horror movies. 
+In recent years, the percentage of good horror movies keeps increasing, which means that horror movies are actually getting better reviews. And the recent two horror films, *It* and *Get Out*, are two vivid examples of elegant horror movies as they have gained amazingly good critical reviews. Their success rebuts those critics’ negative expectations about horror movies and implies the bright future of the performance of horror movies. 
 
-[^1]:In [IMDb rating scale](http://www.imdb.com/list/ls070143432/), 5 means average, 6 means good, 7 menas good +, 8 means very good, 9 means excellent and 10 means amazing. So we define good horror movies as horror movies with ratings greater than or equal to 6 (out of 10).
 
 <br>
 
-To sum up, as both the quantity and quality of horror movies increase, horror movies are welcoming a splendid future. Nevertheless, we have to say, the real situation depends on the thoughts people have towards horror movies. In further study to foresee the future of horror movies, a survey about people’s real ideas about horror movies will be necessary.
+To sum up, as both the quantity and quality of horror movies increase, horror movies are welcoming a splendid future. Nevertheless, we have to say, the real situation will depend on the thoughts people have towards horror movies. Therefore, a survey about people’s real impression of horror is necessary, before we can make an assertion about the future of  horror movies.[^2]
+
+[^2]: Link to GitHub: https://github.com/sichuchang/mp4
+
 
